@@ -1,28 +1,20 @@
-// lib/mongodb.js
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 
-import { MongoClient } from 'mongodb'
+// Load environment variables
+dotenv.config();
 
-const uri = process.env.MONGODB_URI
-const options = { 
-  useNewUrlParser: true,
-}
-
-let client
-let clientPromise
-
-if (!process.env.MONGODB_URI) {
-  throw new Error('Add Mongo URI to .env.local')
-}
-
-if (process.env.NODE_ENV === 'development') { 
-  if (!global._mongoClientPromise) {
-    client = new MongoClient(uri, options)
-    global._mongoClientPromise = client.connect()
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    process.exit(1); // Exit process with failure
   }
-  clientPromise = global._mongoClientPromise
-} else {
-  client = new MongoClient(uri, options)
-  clientPromise = client.connect()
-}
+};
 
-export default clientPromise
+export default connectDB;
