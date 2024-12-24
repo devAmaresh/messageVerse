@@ -4,6 +4,11 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get("token");
   const { pathname } = request.nextUrl;
 
+  // If the user is logged in, prevent access to login and register pages
+  if (token && (pathname === "/login" || pathname === "/register")) {
+    return NextResponse.redirect(new URL("/chat", request.url)); // Redirect to home or dashboard if logged in
+  }
+
   // Allow static files (like CSS, images, etc.) and public routes (e.g., login, register)
   if (
     pathname.startsWith("/_next/") || // For Next.js internal assets
