@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("token");
+  console.log("Token:", token);
   const { pathname } = request.nextUrl;
 
   // If the user is logged in, prevent access to login and register pages

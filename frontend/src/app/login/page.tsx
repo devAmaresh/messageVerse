@@ -2,11 +2,12 @@
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Mail, Lock, LogIn } from "lucide-react";
-import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
 import backend_url from "@/utils/backend";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Spin } from "antd";
 type FormValues = {
   email: string;
   password: string;
@@ -16,12 +17,11 @@ const LoginPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<FormValues>();
   const { toast } = useToast();
   const router = useRouter();
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log("Logging in with:", data);
     try {
       const res = await axios.post(`${backend_url}/api/auth/login`, data, {
         withCredentials: true,
@@ -42,13 +42,8 @@ const LoginPage = () => {
     }
   };
 
-  const handleGoogleLogin = () => {
-    console.log("Logging in with Google");
-    // Add Google login logic here
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 to-indigo-600">
+    <div className="min-h-screen flex items-center justify-center">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
         <h1 className="text-2xl font-bold text-center text-gray-800 flex items-center justify-center gap-2">
           <LogIn className="w-6 h-6 text-purple-600" />
@@ -68,7 +63,7 @@ const LoginPage = () => {
               Email Address
             </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-2.5 text-gray-500 w-5 h-5" />
+              <Mail className="absolute left-3 top-3 text-gray-500 w-5 h-5" />
               <input
                 id="email"
                 type="email"
@@ -102,7 +97,7 @@ const LoginPage = () => {
               Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-3 top-2.5 text-gray-500 w-5 h-5" />
+              <Lock className="absolute left-3 top-3 text-gray-500 w-5 h-5" />
               <input
                 id="password"
                 type="password"
@@ -127,28 +122,28 @@ const LoginPage = () => {
               </p>
             )}
           </div>
-
+          <div>
+            <Link href="/register">
+              <p className="text-purple-600 hover:opacity-80">
+                Don't have an account? Register here
+              </p>
+            </Link>
+          </div>
           <button
             type="submit"
-            className="w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 flex items-center justify-center gap-2"
+            disabled={isSubmitting}
+            className="disabled:cursor-not-allowed w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 flex items-center justify-center gap-2"
           >
-            <LogIn className="w-5 h-5" />
-            Login
+            {isSubmitting ? (
+              <Spin spinning />
+            ) : (
+              <>
+                <LogIn className="w-5 h-5" />
+                Login
+              </>
+            )}
           </button>
         </form>
-
-        <div className="flex items-center justify-center mt-6">
-          <span className="text-sm text-gray-600">OR</span>
-        </div>
-
-        {/* Google Login */}
-        <button
-          onClick={handleGoogleLogin}
-          className="w-full flex items-center justify-center bg-red-500 text-white py-2 rounded-md mt-4 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 gap-2"
-        >
-          <FcGoogle />
-          Login with Google
-        </button>
       </div>
     </div>
   );
