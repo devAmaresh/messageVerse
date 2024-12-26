@@ -1,6 +1,10 @@
 // routes/chatRoutes.js
 import express from "express";
-import { createChat, getChats, sendMessage } from "../controllers/chatController.js";
+import {
+  createChat,
+  getChats,
+  sendMessage,
+} from "../controllers/chatController.js";
 
 const router = express.Router();
 
@@ -8,7 +12,7 @@ const router = express.Router();
 router.post("/", createChat);
 
 // Get all chats for the authenticated user
-router.get("/", getChats);
+router.get("/:chatId", getChats);
 
 // Send a message to a specific chat
 router.post("/message", sendMessage);

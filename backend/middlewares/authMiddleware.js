@@ -9,9 +9,19 @@ export const protect = async (req, res, next) => {
     try {
       token = req.cookies.token; // Retrieve token from cookies
       const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify the token
-      req.user = await User.findById(decoded.id).select("-password"); // Attach user data to request object
+
+      // Attach user data to request object
+      const user = await User.findById(decoded.id).select("-password");
+      if (!user) {
+        return res.status(401).json({ message: "User not found" }); // User doesn't exist
+      }
+
+      req.user = user; // Attach full user object to request
+      req.body.userId = user._id; // Append user ID to the request body
+
       next(); // Proceed to the next middleware or route handler
     } catch (error) {
+      console.error("Error verifying token:", error);
       res.status(401).json({ message: "Unauthorized access" }); // Token verification failed
     }
   } else {
