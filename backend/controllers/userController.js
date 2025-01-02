@@ -2,8 +2,9 @@ import User from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 export const getAllUsers = async (req, res) => {
   try {
-    // Retrieve the current user ID from the cookie (assuming the cookie is named 'userId')
+
     const token = req.cookies.token;
+    token = req.headers.authorization.split(" ")[1]; 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const currentUserId = decoded.id;
 
