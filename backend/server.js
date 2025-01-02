@@ -32,7 +32,7 @@ app.use(
       credentials: true,
     },
     {
-      origin: "http://localhost:3000",
+      origin: "https://message-verse.vercel.app",
       credentials: true,
     }
   )
