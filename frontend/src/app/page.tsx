@@ -81,10 +81,10 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-[#001F54] to-[#00BFFF] dark:from-[#1F1F1F] dark:to-[#121212]">
+      <section className="relative bg-gradient-to-br from-purple-600 to-blue-500 dark:from-[#1F1F1F] dark:to-[#121212]">
         <div className="container max-w-screen-xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-12 items-start">
+            <div className="space-y-6 self-start md:pt-44 pt-10">
               <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight">
                 Connect Instantly with MessageVerse
               </h1>
@@ -111,13 +111,13 @@ export default function Home() {
                 </Button>
               </div>
             </div>
-            <div className="relative">
+            <div className="relative mt-10">
               <Image
                 src="https://img.freepik.com/free-photo/medium-shot-brunette-woman-with-smartphone_23-2148294076.jpg"
                 width={500}
                 height={500}
                 alt="MessageVerse App"
-                className="rounded-lg shadow-2xl"
+                className="rounded-lg shadow-2xl "
               />
               <div className="absolute top-1/4 -left-12 bg-white dark:bg-gray-800 rounded-lg p-4 shadow-lg">
                 <p className="text-gray-800 dark:text-white">
@@ -413,7 +413,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-[#001F54] to-[#00BFFF] dark:from-[#1F1F1F] dark:to-[#121212]">
+      <section className="py-20 bg-gradient-to-br from-purple-600 to-blue-500 dark:from-[#1F1F1F] dark:to-[#121212]">
         <div className="container max-w-screen-xl mx-auto px-4 text-center text-white">
           <h2 className="text-4xl font-bold mb-6">Ready to Get Started?</h2>
           <p className="text-xl mb-8 opacity-90">
