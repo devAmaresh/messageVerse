@@ -8,6 +8,8 @@ import { LogOutIcon, X } from "lucide-react";
 import Link from "next/link";
 import { FloatButton } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
+import { ThemeToggle } from "./theme-toggle";
+
 type User = {
   _id: string; // The unique identifier of the user
   name: string; // The name of the user
@@ -41,9 +43,11 @@ export default function Sidebar({
     };
     fetchUsers();
   }, []);
-  const handleUserClick = (user: any) => {
+
+  const handleUserClick = (user: User) => {
     onSelectUser(user); // Call the function with the user object
   };
+
   const sidebarRef = useRef<HTMLDivElement | null>(null);
   const handleToggleSidebar = () => {
     sidebarRef.current?.classList.toggle("hidden");
@@ -59,19 +63,20 @@ export default function Sidebar({
       />
 
       <div
-        className={`w-1/2 md:w-1/4 bg-gray-100 p-4 h-screen  flex-col justify-between
-        md:flex hidden absolute z-[999999999999999] md:static overflow-y-auto
-        `}
+        className={`w-1/2 md:w-1/4 bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-4 h-screen
+        flex-col justify-between md:flex hidden absolute z-[999999999999999] md:static overflow-y-auto`}
         ref={sidebarRef}
       >
         <div>
-          <div className="flex justify-between">
-            <h3 className="font-semibold mb-2">Users</h3>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="font-semibold">Users</h3>
+            <ThemeToggle />
             <X
               className="w-6 h-6 cursor-pointer md:hidden"
               onClick={handleToggleSidebar}
             />
           </div>
+
           <div>
             {users.map((user) => (
               <div
@@ -79,16 +84,15 @@ export default function Sidebar({
                 className={`flex items-center p-2 mb-2 cursor-pointer rounded-md
               ${
                 selectedUser?._id === user._id
-                  ? "bg-zinc-300"
-                  : "hover:bg-zinc-200"
-              }
-              `}
+                  ? "bg-zinc-300 dark:bg-zinc-700"
+                  : "hover:bg-zinc-200 dark:hover:bg-zinc-800"
+              }`}
                 onClick={() => handleUserClick(user)}
               >
                 <Avatar>
                   <AvatarImage
                     src={`https://api.dicebear.com/9.x/adventurer/svg?seed=${user._id}`}
-                    className="bg-zinc-300"
+                    className="bg-zinc-300 dark:bg-zinc-700"
                   />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
@@ -99,7 +103,7 @@ export default function Sidebar({
         </div>
 
         {/* Logout Section */}
-        <div className="flex justify-center items-center p-2 bg-blue-200 rounded-md">
+        <div className="flex justify-center items-center p-2 bg-blue-200 dark:bg-blue-800 text-blue-900 dark:text-blue-100 rounded-md">
           <Link href="/logout" className="flex items-center space-x-2">
             <LogOutIcon className="w-6 h-6" />
             <span>Logout</span>

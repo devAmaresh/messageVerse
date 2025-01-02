@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import axios from "axios";
 import "./Chat.css";
+import { Spin } from "antd";
 type ChatMessage = {
   _id: string;
   sender: User;
@@ -126,9 +127,10 @@ export default function ChatApp({
       socket.current.emit("typing", chatId);
     }
   };
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const fetchMessages = async () => {
+      setLoading(true);
       try {
         const res = await axios.get(`${backend_url}/api/chats/${chatId}`, {
           withCredentials: true,
@@ -136,6 +138,8 @@ export default function ChatApp({
         setChat(res.data.messages);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
     if (chatId) {
@@ -144,11 +148,22 @@ export default function ChatApp({
   }, [chatId]);
   return (
     <>
-      <div className="mt-2 p-5 border-2 border-zinc-300 bg-white rounded-md">
+      <div className="mt-2 p-5 border-2 border-zinc-300 dark:border-zinc-700 bg-white dark:bg-gray-900 rounded-md">
         <div
           className="rounded-md h-[85vh] overflow-y-auto"
           ref={chatContainerRef}
         >
+          {loading ?(
+          <Spin size="large" className="flex items-center justify-center h-full" />
+          ):(
+            <>
+            {chat.length === 0 && (
+            <div className="flex items-center justify-center h-full">
+              <p className="text-lg text-gray-500">
+                Start the conversation by sending a message
+              </p>
+            </div>
+          )}
           {chat.map((msg, index) => (
             <div key={index} className="mb-1.5 mr-2">
               <div
@@ -163,7 +178,7 @@ export default function ChatApp({
                     <Avatar>
                       <AvatarImage
                         src={`https://api.dicebear.com/9.x/adventurer/svg?seed=${currentUserId}`}
-                        className="bg-zinc-300"
+                        className="bg-zinc-300 dark:bg-zinc-700"
                       />
                       <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
@@ -172,15 +187,15 @@ export default function ChatApp({
                 <span
                   className={`p-2 px-3 ${
                     msg.sender._id === currentUserId
-                      ? "rounded-tl-md rounded-b-md bg-zinc-200"
-                      : "rounded-tr-md rounded-b-md bg-zinc-700 text-white"
+                      ? "rounded-tl-md rounded-b-md bg-zinc-200 dark:bg-zinc-800 text-black dark:text-white"
+                      : "rounded-tr-md rounded-b-md bg-zinc-700 text-white dark:bg-zinc-600"
                   }`}
                 >
                   {msg.content}
                 </span>
               </div>
               <div
-                className={`text-zinc-400 text-xs ml-14 flex ${
+                className={`text-zinc-400 dark:text-zinc-500 text-xs ml-14 flex ${
                   msg.sender._id === currentUserId
                     ? "justify-end"
                     : "justify-start"
@@ -190,8 +205,10 @@ export default function ChatApp({
               </div>
             </div>
           ))}
+          </>)}
+          
         </div>
-        <div className="text-sm text-gray-500 flex justify-start">
+        <div className="text-sm text-gray-500 dark:text-gray-400 flex justify-start">
           {isTyping && <span>{isTyping}</span>}
         </div>
 
@@ -202,9 +219,14 @@ export default function ChatApp({
               value={message}
               onChange={handleTyping}
               placeholder="Enter your message"
-              className="w-3/4"
+              className="w-3/4 bg-white dark:bg-gray-800 border-zinc-300 dark:border-zinc-700 text-black dark:text-white"
             />
-            <Button type="submit">Send</Button>
+            <Button
+              type="submit"
+              className="bg-blue-500 dark:bg-blue-600 text-white dark:text-gray-100 hover:bg-blue-600 dark:hover:bg-blue-700"
+            >
+              Send
+            </Button>
           </div>
         </form>
       </div>
