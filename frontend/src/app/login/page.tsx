@@ -8,7 +8,7 @@ import backend_url from "@/utils/backend";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import FloatIcon from "@/components/FloatIcon";
+import FloatIcon from "@/components/FloatIconToggle";
 import { useState } from "react";
 
 const LoginPage = () => {
