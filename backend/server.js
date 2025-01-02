@@ -39,6 +39,9 @@ app.use(express.json());
 connectDB();
 
 // API Routes
+app.use("/", (req, res) => {
+  res.send("Hello World !");
+});
 app.use("/api/auth", authRoutes);
 app.use("/api/chats", protect, chatRoutes); // Protect chat routes with authentication middleware
 app.use("/api/users", protect, userRoutes); // Protect user routes with authentication middleware

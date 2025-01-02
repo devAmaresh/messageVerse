@@ -1,2 +1,2 @@
-const backend_url = "http://localhost:4000";
+const backend_url = `${process.env.NEXT_PUBLIC_BACKEND_URL}`;
 export default backend_url;
