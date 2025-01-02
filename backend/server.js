@@ -26,16 +26,10 @@ const PORT = process.env.PORT || 4000;
 
 // Middleware
 app.use(
-  cors(
-    {
-      origin: "http://localhost:3000",
-      credentials: true,
-    },
-    {
-      origin: "https://message-verse.vercel.app",
-      credentials: true,
-    }
-  )
+  cors({
+    origin: ["http://localhost:3000", "https://message-verse.vercel.app"],
+    credentials: true,
+  })
 );
 app.use(cookieParser());
 app.use(bodyParser.json());
