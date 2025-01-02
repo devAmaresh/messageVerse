@@ -39,9 +39,7 @@ app.use(express.json());
 connectDB();
 
 // API Routes
-app.use("/", (req, res) => {
-  res.send("Hello World !");
-});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/chats", protect, chatRoutes); // Protect chat routes with authentication middleware
 app.use("/api/users", protect, userRoutes); // Protect user routes with authentication middleware
@@ -50,7 +48,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "https://message-verse.vercel.app"],
     credentials: true,
   },
 });
@@ -140,7 +138,9 @@ io.on("connection", (socket) => {
     // console.log(`Socket disconnected: ${socket.id}`);
   });
 });
-
+app.use("/", (req, res) => {
+  res.send("Hello World !");
+});
 server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
