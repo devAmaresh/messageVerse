@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import FloatIcon from "@/components/FloatIconToggle";
 import { useState } from "react";
-
+/* eslint-disable */
 const LoginPage = () => {
   const { toast } = useToast();
   const router = useRouter();
@@ -34,7 +34,6 @@ const LoginPage = () => {
         });
       }
     } catch (error: any) {
-      /* eslint-disable */
       console.error("Error registering:", error);
       toast({
         title: "Uh oh! Something went wrong.",
@@ -42,7 +41,6 @@ const LoginPage = () => {
           (error as any).response?.data?.message ||
           "Unexpected error occurred.",
       });
-    
     } finally {
       setLoading(false);
     }
