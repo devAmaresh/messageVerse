@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import FloatIcon from "@/components/FloatIconToggle";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 /* eslint-disable */
 const LoginPage = () => {
@@ -28,7 +28,9 @@ const LoginPage = () => {
         },
       });
       if (res.status === 200) {
-        Cookies.set("token", res.data.token);
+        Cookies.set("token", res.data.token, {
+          expires: 1,
+        });
         toast({
           title: "Success!",
           description: "You have successfully logged in.",
@@ -52,7 +54,11 @@ const LoginPage = () => {
       setLoading(false);
     }
   };
-
+  useEffect(() => {
+    if (token) {
+      router.replace("/chat");
+    }
+  }, [token]);
   return (
     <div className="min-h-screen flex items-center justify-center">
       <FloatIcon />

@@ -1,10 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import ChatApp from "@/components/Chat";
 import Sidebar from "@/components/Sidebar";
 import axios from "axios";
 import backend_url from "@/utils/backend";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 type User = {
   _id: string; // The unique identifier of the user
   name: string; // The name of the user
@@ -16,6 +17,12 @@ const Page = () => {
   const [chatId, setChatId] = useState<string | null>(null);
   const [currentUserId, setCurrentUserId] = useState<string>("");
   const token = Cookies.get("token");
+  const router = useRouter();
+  useEffect(() => {
+    if (!token) {
+      router.replace("/login");
+    }
+  }, [token]);
   const handleSelectUser = (user: User) => {
     const postChat = async () => {
       try {

@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import FloatIcon from "@/components/FloatIconToggle";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 const RegisterPage = () => {
   const { toast } = useToast();
@@ -30,7 +30,9 @@ const RegisterPage = () => {
         },
       });
       if (res.status === 201) {
-        Cookies.set("token", res.data.token);
+        Cookies.set("token", res.data.token, {
+          expires: 1,
+        });
         toast({
           title: "Success!",
           description: "You have successfully registered.",
@@ -52,6 +54,11 @@ const RegisterPage = () => {
     }
   };
 
+  useEffect(() => {
+    if (token) {
+      router.replace("/chat");
+    }
+  }, [token]);
   return (
     <div className="min-h-screen flex items-center justify-center">
       <FloatIcon />
