@@ -47,7 +47,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 to-indigo-600">
+    <div className="min-h-screen flex items-center justify-center">
       <FloatIcon />
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
         <h1 className="text-2xl font-bold text-center text-gray-800 flex items-center justify-center gap-2">
