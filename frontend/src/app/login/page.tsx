@@ -27,17 +27,22 @@ const LoginPage = () => {
           description: "You have successfully logged in.",
         });
         router.push("/chat");
+      } else {
+        toast({
+          title: "Uh oh! Something went wrong.",
+          description: res.data.message || "Unexpected error occurred.",
+        });
       }
-    } 
-    /* eslint-disable */
-    catch (error: unknown) {
-      const err = error as Error;
-      console.error("Error registering:", err);
+    } catch (error: any) {
+      /* eslint-disable */
+      console.error("Error registering:", error);
       toast({
         title: "Uh oh! Something went wrong.",
         description:
-          (err as any).response?.data?.message || "Unexpected error occurred.",
+          (error as any).response?.data?.message ||
+          "Unexpected error occurred.",
       });
+    
     } finally {
       setLoading(false);
     }
