@@ -3,8 +3,7 @@ import { useEffect } from "react";
 import { Oval } from "react-loader-spinner";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import axios from "axios";
-import backend_url from "@/utils/backend";
+import Cookies from "js-cookie";
 const Page = () => {
   
   const { toast } = useToast();
@@ -12,20 +11,8 @@ const Page = () => {
   useEffect(() => {
     const logout = async () => {
       try {
-        const res = await axios.post(
-          `${backend_url}/api/auth/logout`,
-          {},
-          {
-            withCredentials: true,
-          }
-        );
-        if (res.status == 200) {
-          toast({
-            title: "Logged out!",
-            description: "You have been successfully logged out.",
-          });
+          Cookies.remove("token");
           router.replace("/login");
-        }
       } catch (error) {
         toast({
           title: "Error!",

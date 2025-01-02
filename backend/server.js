@@ -53,7 +53,7 @@ const io = new Server(server, {
   },
 });
 io.use((socket, next) => {
-  const token = socket.handshake.headers.cookie.split("=")[1];
+  const token = socket.handshake.auth.token;
 
   if (!token) {
     return next(new Error("Authentication error"));
@@ -73,13 +73,14 @@ io.use((socket, next) => {
     next();
   });
 });
+
 io.on("connection", (socket) => {
   socket.on("join_chat", (chatId) => {
     if (!socket.user._id) {
       return socket.emit("unauthenticated", "Please authenticate first");
     }
     socket.join(chatId); // Adds the user to the room identified by chatId
-    console.log(`User ${socket.user._id} joined chat: ${chatId}`);
+    console.log(`User ${socket.user.email} joined chat: ${chatId}`);
   });
 
   // Handle sending messages

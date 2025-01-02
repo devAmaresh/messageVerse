@@ -9,7 +9,7 @@ import Link from "next/link";
 import { FloatButton } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import { ThemeToggle } from "./theme-toggle";
-
+import Cookies from "js-cookie";
 type User = {
   _id: string; // The unique identifier of the user
   name: string; // The name of the user
@@ -25,13 +25,17 @@ export default function Sidebar({
 }) {
   const [users, setUsers] = useState<User[]>([]);
   const { toast } = useToast();
-
+  const token = Cookies.get("token");
   useEffect(() => {
     // Fetch the list of users
     const fetchUsers = async () => {
       try {
         const res = await axios.get(`${backend_url}/api/users`, {
           withCredentials: true,
+          headers:{
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          }
         });
         setUsers(res.data);
       } 

@@ -1,4 +1,3 @@
-"use client";
 import { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 import backend_url from "@/utils/backend";
@@ -6,9 +5,11 @@ import { message as AntdMessage } from "antd";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Cookies from "js-cookie";
 import axios from "axios";
 import "./Chat.css";
 import { Spin } from "antd";
+
 type ChatMessage = {
   _id: string;
   sender: User;
@@ -34,15 +35,22 @@ export default function ChatApp({
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState<ChatMessage[]>([]);
   const [isTyping, setIsTyping] = useState("");
-  const socket = useRef(
-    io(`${backend_url}`, {
-      withCredentials: true, // Send cookies with the request
-    })
-  );
+  const socket = useRef<any>(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const [messageApi, contextHolder] = AntdMessage.useMessage();
+  const [loading, setLoading] = useState(false);
+  const token = Cookies.get("token"); // Get token from cookies
+
   useEffect(() => {
+    // Establish socket connection with token authorization
+    socket.current = io(`${backend_url}`, {
+      withCredentials: true, // Send cookies with the request
+      auth: {
+        token: `Bearer ${token}`, // Pass token in the auth object
+      },
+    });
+
     const s = socket.current;
 
     s.on("receive_message", (data: ChatMessage) => {
@@ -56,12 +64,13 @@ export default function ChatApp({
 
     s.on("disconnect", () => {});
 
+    // Clean up socket connection on unmount
     return () => {
       s.off("receive_message");
       s.off("connect");
       s.off("disconnect");
     };
-  }, [chatId]);
+  }, [chatId, token]); // Adding token as dependency
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -69,15 +78,14 @@ export default function ChatApp({
         chatContainerRef.current.scrollHeight;
     }
   }, [chat]);
+
   useEffect(() => {
     const s = socket.current;
 
     // Listen for typing events
     s.on("typing", (userName: string) => {
       setIsTyping(`${userName} is typing...`);
-
       if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
-
       typingTimeoutRef.current = setTimeout(() => setIsTyping(""), 1000);
     });
 
@@ -124,13 +132,17 @@ export default function ChatApp({
       socket.current.emit("typing", chatId);
     }
   };
-  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const fetchMessages = async () => {
       setLoading(true);
       try {
         const res = await axios.get(`${backend_url}/api/chats/${chatId}`, {
           withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Send token in the API request
+          },
         });
         setChat(res.data.messages);
       } catch (error) {
@@ -143,7 +155,8 @@ export default function ChatApp({
     if (chatId) {
       fetchMessages();
     }
-  }, [chatId]);
+  }, [chatId, token]);
+
   return (
     <>
       {contextHolder}

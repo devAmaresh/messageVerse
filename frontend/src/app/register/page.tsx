@@ -10,11 +10,12 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import FloatIcon from "@/components/FloatIconToggle";
 import { useState } from "react";
-
+import Cookies from "js-cookie";
 const RegisterPage = () => {
   const { toast } = useToast();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const token = Cookies.get("token");
   const onFinish = async (values: {
     name: string;
     email: string;
@@ -22,18 +23,23 @@ const RegisterPage = () => {
   }) => {
     try {
       setLoading(true);
-      const res = await axios.post(`${backend_url}/api/auth/register`, values);
+      const res = await axios.post(`${backend_url}/api/auth/register`, values, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (res.status === 201) {
+        Cookies.set("token", res.data.token);
         toast({
           title: "Success!",
           description: "You have successfully registered.",
         });
         router.push("/chat");
       }
-    } 
-    /* eslint-disable */
+    } catch (error: any) {
+      /* eslint-disable */
 
-    catch (error: any) {
       console.error("Error registering:", error);
       toast({
         title: "Uh oh! Something went wrong.",

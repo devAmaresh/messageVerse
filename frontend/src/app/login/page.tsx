@@ -10,18 +10,25 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import FloatIcon from "@/components/FloatIconToggle";
 import { useState } from "react";
+import Cookies from "js-cookie";
 /* eslint-disable */
 const LoginPage = () => {
   const { toast } = useToast();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const token = Cookies.get("token");
   const onFinish = async (values: { email: string; password: string }) => {
     setLoading(true);
     try {
       const res = await axios.post(`${backend_url}/api/auth/login`, values, {
         withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
       if (res.status === 200) {
+        Cookies.set("token", res.data.token);
         toast({
           title: "Success!",
           description: "You have successfully logged in.",

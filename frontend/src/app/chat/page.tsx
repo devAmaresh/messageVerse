@@ -4,7 +4,7 @@ import ChatApp from "@/components/Chat";
 import Sidebar from "@/components/Sidebar";
 import axios from "axios";
 import backend_url from "@/utils/backend";
-
+import Cookies from "js-cookie";
 type User = {
   _id: string; // The unique identifier of the user
   name: string; // The name of the user
@@ -15,6 +15,7 @@ const Page = () => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [chatId, setChatId] = useState<string | null>(null);
   const [currentUserId, setCurrentUserId] = useState<string>("");
+  const token = Cookies.get("token");
   const handleSelectUser = (user: User) => {
     const postChat = async () => {
       try {
@@ -26,6 +27,10 @@ const Page = () => {
           },
           {
             withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
           }
         );
         if (res.status === 200 || res.status === 201) {

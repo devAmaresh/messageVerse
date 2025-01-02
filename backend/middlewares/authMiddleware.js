@@ -4,11 +4,17 @@ import User from "../models/userModel.js";
 export const protect = async (req, res, next) => {
   let token;
 
-  // Check if the token exists in the cookies
-  if (req.cookies.token) {
+  // Check if the token exists in the Authorization header
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer ")
+  ) {
     try {
-      token = req.cookies.token; // Retrieve token from cookies
-      const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify the token
+      // Retrieve token from Authorization header
+      token = req.headers.authorization.split(" ")[1]; // Extract token from 'Bearer <token>'
+
+      // Verify the token
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       // Attach user data to request object
       const user = await User.findById(decoded.id).select("-password");
@@ -25,6 +31,6 @@ export const protect = async (req, res, next) => {
       res.status(401).json({ message: "Unauthorized access" }); // Token verification failed
     }
   } else {
-    res.status(401).json({ message: "No token provided" }); // Token not found in cookies
+    res.status(401).json({ message: "No token provided" }); // Token not found in Authorization header
   }
 };
