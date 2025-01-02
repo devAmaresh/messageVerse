@@ -1,9 +1,10 @@
+"use client";
 import { MoonOutlined, SunOutlined } from "@ant-design/icons";
 import { FloatButton } from "antd";
 import { useTheme } from "next-themes";
 import React from "react";
 
-const floatIcon = () => {
+const FloatIcon = () => {
   const { setTheme, theme } = useTheme();
   return (
     <FloatButton
@@ -13,4 +14,4 @@ const floatIcon = () => {
   );
 };
 
-export default floatIcon;
+export default FloatIcon;

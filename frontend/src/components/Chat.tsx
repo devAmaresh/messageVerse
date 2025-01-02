@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 import backend_url from "@/utils/backend";
-import { useToast } from "@/hooks/use-toast";
+import { message as AntdMessage } from "antd";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -41,8 +41,7 @@ export default function ChatApp({
   );
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
-  const { toast } = useToast();
-
+  const [messageApi, contextHolder] = AntdMessage.useMessage();
   useEffect(() => {
     const s = socket.current;
 
@@ -55,9 +54,7 @@ export default function ChatApp({
       }
     });
 
-    s.on("disconnect", () => {
-      toast({ title: "Disconnected from server" });
-    });
+    s.on("disconnect", () => {});
 
     return () => {
       s.off("receive_message");
@@ -138,6 +135,7 @@ export default function ChatApp({
         setChat(res.data.messages);
       } catch (error) {
         console.error(error);
+        messageApi.error("Failed to fetch messages");
       } finally {
         setLoading(false);
       }
@@ -145,68 +143,72 @@ export default function ChatApp({
     if (chatId) {
       fetchMessages();
     }
-  }, [chatId]);
+  }, [chatId,messageApi]);
   return (
     <>
+      {contextHolder}
       <div className="mt-2 p-5 border-2 border-zinc-300 dark:border-zinc-700 bg-white dark:bg-gray-900 rounded-md">
         <div
           className="rounded-md h-[85vh] overflow-y-auto"
           ref={chatContainerRef}
         >
-          {loading ?(
-          <Spin size="large" className="flex items-center justify-center h-full" />
-          ):(
+          {loading ? (
+            <Spin
+              size="large"
+              className="flex items-center justify-center h-full"
+            />
+          ) : (
             <>
-            {chat.length === 0 && (
-            <div className="flex items-center justify-center h-full">
-              <p className="text-lg text-gray-500">
-                Start the conversation by sending a message
-              </p>
-            </div>
-          )}
-          {chat.map((msg, index) => (
-            <div key={index} className="mb-1.5 mr-2">
-              <div
-                className={`flex ${
-                  msg.sender._id === currentUserId
-                    ? "justify-end"
-                    : "justify-start"
-                }`}
-              >
-                {msg.sender._id !== currentUserId && (
-                  <div className="mr-3">
-                    <Avatar>
-                      <AvatarImage
-                        src={`https://api.dicebear.com/9.x/adventurer/svg?seed=${currentUserId}`}
-                        className="bg-zinc-300 dark:bg-zinc-700"
-                      />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
+              {chat.length === 0 && (
+                <div className="flex items-center justify-center h-full">
+                  <p className="text-lg text-gray-500">
+                    Start the conversation by sending a message
+                  </p>
+                </div>
+              )}
+              {chat.map((msg, index) => (
+                <div key={index} className="mb-1.5 mr-2">
+                  <div
+                    className={`flex ${
+                      msg.sender._id === currentUserId
+                        ? "justify-end"
+                        : "justify-start"
+                    }`}
+                  >
+                    {msg.sender._id !== currentUserId && (
+                      <div className="mr-3">
+                        <Avatar>
+                          <AvatarImage
+                            src={`https://api.dicebear.com/9.x/adventurer/svg?seed=${currentUserId}`}
+                            className="bg-zinc-300 dark:bg-zinc-700"
+                          />
+                          <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
+                      </div>
+                    )}
+                    <span
+                      className={`p-2 px-3 ${
+                        msg.sender._id === currentUserId
+                          ? "rounded-tl-md rounded-b-md bg-zinc-200 dark:bg-zinc-800 text-black dark:text-white"
+                          : "rounded-tr-md rounded-b-md bg-zinc-700 text-white dark:bg-zinc-600"
+                      }`}
+                    >
+                      {msg.content}
+                    </span>
                   </div>
-                )}
-                <span
-                  className={`p-2 px-3 ${
-                    msg.sender._id === currentUserId
-                      ? "rounded-tl-md rounded-b-md bg-zinc-200 dark:bg-zinc-800 text-black dark:text-white"
-                      : "rounded-tr-md rounded-b-md bg-zinc-700 text-white dark:bg-zinc-600"
-                  }`}
-                >
-                  {msg.content}
-                </span>
-              </div>
-              <div
-                className={`text-zinc-400 dark:text-zinc-500 text-xs ml-14 flex ${
-                  msg.sender._id === currentUserId
-                    ? "justify-end"
-                    : "justify-start"
-                }`}
-              >
-                {new Date(msg.createdAt).toLocaleString()}
-              </div>
-            </div>
-          ))}
-          </>)}
-          
+                  <div
+                    className={`text-zinc-400 dark:text-zinc-500 text-xs ml-14 flex ${
+                      msg.sender._id === currentUserId
+                        ? "justify-end"
+                        : "justify-start"
+                    }`}
+                  >
+                    {new Date(msg.createdAt).toLocaleString()}
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
         </div>
         <div className="text-sm text-gray-500 dark:text-gray-400 flex justify-start">
           {isTyping && <span>{isTyping}</span>}

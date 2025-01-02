@@ -1,6 +1,6 @@
 "use client";
 
-import { Form, Input, Button, Spin } from "antd";
+import { Form, Input, Button } from "antd";
 import { Mail, Lock, LogIn } from "lucide-react";
 import { HomeOutlined } from "@ant-design/icons";
 import axios from "axios";
@@ -8,13 +8,15 @@ import backend_url from "@/utils/backend";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import FloatIcon from "@/components/floatIcon";
+import FloatIcon from "@/components/FloatIcon";
+import { useState } from "react";
 
 const LoginPage = () => {
   const { toast } = useToast();
   const router = useRouter();
-
+  const [loading, setLoading] = useState(false);
   const onFinish = async (values: { email: string; password: string }) => {
+    setLoading(true);
     try {
       const res = await axios.post(`${backend_url}/api/auth/login`, values, {
         withCredentials: true,
@@ -26,13 +28,18 @@ const LoginPage = () => {
         });
         router.push("/chat");
       }
-    } catch (error: any) {
-      console.error("Error logging in:", error);
+    } 
+    /* eslint-disable */
+    catch (error: unknown) {
+      const err = error as Error;
+      console.error("Error registering:", err);
       toast({
         title: "Uh oh! Something went wrong.",
         description:
-          error.response?.data?.message || "Unexpected error occurred.",
+          (err as any).response?.data?.message || "Unexpected error occurred.",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -87,7 +94,7 @@ const LoginPage = () => {
           <div>
             <Link href="/register">
               <p className="text-purple-600 hover:opacity-80">
-                Don't have an account? Register here
+                Don&apos;t have an account? Register here
               </p>
             </Link>
           </div>
@@ -98,6 +105,8 @@ const LoginPage = () => {
               htmlType="submit"
               className="w-full flex items-center justify-center gap-2"
               size="large"
+              disabled={loading}
+              loading={loading}
             >
               <LogIn className="w-5 h-5" />
               Login

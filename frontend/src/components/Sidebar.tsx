@@ -34,15 +34,18 @@ export default function Sidebar({
           withCredentials: true,
         });
         setUsers(res.data);
-      } catch (error) {
+      } 
+      /* eslint-disable */
+      catch (error: any) {
         toast({
           title: "Error fetching users",
           description: "Unable to load users.",
         });
+        console.error(error);
       }
     };
     fetchUsers();
-  }, []);
+  }, [toast]);
 
   const handleUserClick = (user: User) => {
     onSelectUser(user); // Call the function with the user object

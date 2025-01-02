@@ -118,7 +118,7 @@ export default function Home() {
               />
               <div className="absolute top-1/4 -left-12 bg-white dark:bg-gray-800 rounded-lg p-4 shadow-lg">
                 <p className="text-gray-800 dark:text-white">
-                  Hey! How's it going? 👋
+                  Hey! How&apos;s it going? 👋
                 </p>
                 <span className="text-xs text-gray-500 dark:text-gray-400">
                   9:41 AM
@@ -126,7 +126,7 @@ export default function Home() {
               </div>
               <div className="absolute bottom-1/4 -right-12 bg-blue-100 dark:bg-blue-900 rounded-lg p-4 shadow-lg">
                 <p className="text-blue-800 dark:text-blue-100">
-                  Just tried MessageVerse, it's amazing! 🚀
+                  Just tried MessageVerse, it&apos;s amazing! 🚀
                 </p>
                 <span className="text-xs text-blue-600 dark:text-blue-300">
                   9:42 AM
@@ -249,7 +249,7 @@ export default function Home() {
                     Data Protection
                   </h3>
                   <p className="text-gray-600 dark:text-gray-300">
-                    We don't store your messages on our servers once they're
+                    We don&apos;t store your messages on our servers once they&apos;re
                     delivered, and we never share your personal information.
                   </p>
                 </div>
@@ -289,7 +289,7 @@ export default function Home() {
                 name: "Alex Johnson",
                 role: "Marketing Manager",
                 quote:
-                  "MessageVerse has revolutionized how our team communicates. It's fast, secure, and incredibly user-friendly!",
+                  "MessageVerse has revolutionized how our team communicates. It&apos;s fast, secure, and incredibly user-friendly!",
               },
               {
                 name: "Samantha Lee",
@@ -301,7 +301,7 @@ export default function Home() {
                 name: "Michael Chen",
                 role: "Software Developer",
                 quote:
-                  "The end-to-end encryption and web-based platform make MessageVerse the perfect solution for our remote team's needs.",
+                  "The end-to-end encryption and web-based platform make MessageVerse the perfect solution for our remote team&apos;s needs.",
               },
             ].map((testimonial, index) => (
               <Card
@@ -310,7 +310,7 @@ export default function Home() {
               >
                 <CardContent className="p-6">
                   <p className="text-gray-600 dark:text-gray-300 mb-4">
-                    "{testimonial.quote}"
+                  &quot;{testimonial.quote}&quot;
                   </p>
                   <div className="flex items-center">
                     <div className="w-12 h-12 bg-blue-200 dark:bg-blue-700 rounded-full mr-4"></div>
@@ -338,7 +338,7 @@ export default function Home() {
               Simple, Transparent Pricing
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300">
-              Choose the plan that's right for you
+              Choose the plan that&apos;s right for you
             </p>
           </div>
 

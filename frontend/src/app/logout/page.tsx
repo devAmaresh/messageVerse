@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import backend_url from "@/utils/backend";
-const page = () => {
+const Page = () => {
   const { toast } = useToast();
   const router = useRouter();
   useEffect(() => {
@@ -34,7 +34,7 @@ const page = () => {
       }
     };
     logout();
-  }, []);
+  }, [router, toast]);
   return (
     <div className="min-h-screen flex items-center justify-center mx-auto my-auto">
       <Oval
@@ -50,4 +50,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
