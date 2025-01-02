@@ -143,7 +143,7 @@ export default function ChatApp({
     if (chatId) {
       fetchMessages();
     }
-  }, [chatId,messageApi]);
+  }, [chatId]);
   return (
     <>
       {contextHolder}
