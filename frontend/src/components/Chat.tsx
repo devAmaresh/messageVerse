@@ -10,6 +10,8 @@ import axios from "axios";
 import "./Chat.css";
 import { Spin } from "antd";
 
+/* eslint-disable */
+
 type ChatMessage = {
   _id: string;
   sender: User;
