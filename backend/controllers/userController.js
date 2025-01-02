@@ -3,9 +3,7 @@ import jwt from "jsonwebtoken";
 export const getAllUsers = async (req, res) => {
   try {
 
-    const token = req.headers.authorization.split(" ")[1]; 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const currentUserId = decoded.id;
+    const currentUserId = req.body.userId;
 
     if (!currentUserId) {
       return res.status(400).json({ message: "User ID not found in cookies" });
