@@ -536,7 +536,14 @@ export default function Home() {
               reserved.
             </p>
             <p>
-              Made with ❤️ by <a href="https://amareshh.vercel.app" className="underline underline-offset-2">Amaresh</a>
+              Made with ❤️ by{" "}
+              <a
+                href="https://amareshh.vercel.app"
+                target="_blank"
+                className="underline underline-offset-2"
+              >
+                Amaresh
+              </a>
             </p>
           </div>
         </div>
