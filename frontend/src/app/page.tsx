@@ -96,6 +96,9 @@ export default function Home() {
                 <Button
                   size="lg"
                   className="bg-white text-blue-600 hover:bg-blue-50"
+                  onClick={() => {
+                    router.push("/register");
+                  }}
                 >
                   Get Started Free
                 </Button>
@@ -249,8 +252,9 @@ export default function Home() {
                     Data Protection
                   </h3>
                   <p className="text-gray-600 dark:text-gray-300">
-                    We don&apos;t store your messages on our servers once they&apos;re
-                    delivered, and we never share your personal information.
+                    We don&apos;t store your messages on our servers once
+                    they&apos;re delivered, and we never share your personal
+                    information.
                   </p>
                 </div>
               </div>
@@ -310,7 +314,7 @@ export default function Home() {
               >
                 <CardContent className="p-6">
                   <p className="text-gray-600 dark:text-gray-300 mb-4">
-                  &quot;{testimonial.quote}&quot;
+                    &quot;{testimonial.quote}&quot;
                   </p>
                   <div className="flex items-center">
                     <div className="w-12 h-12 bg-blue-200 dark:bg-blue-700 rounded-full mr-4"></div>
@@ -419,6 +423,9 @@ export default function Home() {
             size="lg"
             variant="secondary"
             className="bg-white text-blue-600 hover:bg-blue-50 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+            onClick={() => {
+              router.push("/register");
+            }}
           >
             Sign Up Now
           </Button>
@@ -527,6 +534,9 @@ export default function Home() {
             <p>
               &copy; {new Date().getFullYear()} MessageVerse. All rights
               reserved.
+            </p>
+            <p>
+              Made with 🤍 by <a href="https://amareshh.vercel.app">Amaresh</a>
             </p>
           </div>
         </div>
