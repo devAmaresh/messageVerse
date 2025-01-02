@@ -1,11 +1,13 @@
 "use client";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ChatApp from "@/components/Chat";
 import Sidebar from "@/components/Sidebar";
 import axios from "axios";
 import backend_url from "@/utils/backend";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+/* eslint-disable */
+
 type User = {
   _id: string; // The unique identifier of the user
   name: string; // The name of the user

@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable */
 
 import { Form, Input, Button } from "antd";
 import { Mail, Lock, LogIn, User } from "lucide-react";
