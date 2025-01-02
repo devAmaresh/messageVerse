@@ -53,15 +53,15 @@ const io = new Server(server, {
   },
 });
 io.use((socket, next) => {
-  const token = socket.handshake.auth.token;
-
+  const token = socket.handshake.auth.token; // Extract token from Authorization header
   if (!token) {
-    return next(new Error("Authentication error"));
+    return next(new Error("Authentication error: No token provided"));
   }
 
   jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
     if (err) {
-      return next(new Error("Authentication error"));
+      console.log("Error verifying token:", err);
+      return next(new Error("Authentication error: Invalid token"));
     }
 
     const user = await User.findById(decoded.id).select("-password");
@@ -77,6 +77,7 @@ io.use((socket, next) => {
 io.on("connection", (socket) => {
   socket.on("join_chat", (chatId) => {
     if (!socket.user._id) {
+      cosnole.log("User not authenticated");
       return socket.emit("unauthenticated", "Please authenticate first");
     }
     socket.join(chatId); // Adds the user to the room identified by chatId
@@ -92,7 +93,6 @@ io.on("connection", (socket) => {
 
       const { content, chatId } = data;
       const senderId = socket.user._id; // Use userId from socket object
-
       // Create a new message in the database
       const message = await Message.create({
         sender: senderId,
@@ -116,23 +116,15 @@ io.on("connection", (socket) => {
   // Handle typing indicator
   socket.on("typing", (chatId) => {
     if (!socket.user?._id || !chatId) return; // Ensure user and chatId exist
-    socket.broadcast.to(chatId).emit("typing", socket.user._id.toString()); // Send userId
+    socket.broadcast.to(chatId).emit("typing", socket.user.name.toString()); // Send userId
   });
 
   // Handle stop typing indicator
   socket.on("stop_typing", (chatId) => {
     if (!socket.user?._id || !chatId) return; // Ensure user and chatId exist
-    socket.broadcast.to(chatId).emit("stop_typing", socket.user._id.toString()); // Send userId
+    socket.broadcast.to(chatId).emit("stop_typing", socket.user.name.toString()); // Send userId
   });
 
-  // Join a chat room (only authenticated users can join)
-  socket.on("join_chat", (chatId) => {
-    if (!socket.user._id) {
-      return socket.emit("unauthenticated", "Please authenticate first");
-    }
-    socket.join(chatId);
-    console.log(`User ${socket.user._id} joined chat: ${chatId}`);
-  });
 
   // Handle disconnection
   socket.on("disconnect", () => {

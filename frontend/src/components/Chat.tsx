@@ -43,11 +43,9 @@ export default function ChatApp({
   const token = Cookies.get("token"); // Get token from cookies
 
   useEffect(() => {
-    // Establish socket connection with token authorization
     socket.current = io(`${backend_url}`, {
-      withCredentials: true, // Send cookies with the request
       auth: {
-        token: `Bearer ${token}`, // Pass token in the auth object
+        token: token,
       },
     });
 
@@ -56,18 +54,14 @@ export default function ChatApp({
     s.on("receive_message", (data: ChatMessage) => {
       setChat((prevChat) => [...prevChat, data]);
     });
-    s.on("connect", () => {
-      if (chatId) {
-        s.emit("join_chat", chatId);
-      }
-    });
+    if (chatId) {
+      s.emit("join_chat", chatId);
+    }
 
     s.on("disconnect", () => {});
 
-    // Clean up socket connection on unmount
     return () => {
       s.off("receive_message");
-      s.off("connect");
       s.off("disconnect");
     };
   }, [chatId, token]); // Adding token as dependency
