@@ -15,8 +15,6 @@ import {
 } from "lucide-react";
 import { ThemeToggle } from "../components/theme-toggle";
 import { useRouter } from "next/navigation";
-import GridPattern from "@/components/ui/grid-pattern";
-import { cn } from "@/lib/utils";
 import Ripple from "@/components/ui/ripple";
 import { MagicCard } from "@/components/ui/magic-card";
 import { useTheme } from "next-themes";
@@ -27,18 +25,6 @@ export default function Home() {
   const { theme } = useTheme();
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-zinc-800">
-      <GridPattern
-        width={30}
-        height={30}
-        x={-1}
-        y={-1}
-        strokeDasharray={"4 2"}
-        className={
-          cn(
-            "[mask-image:radial-gradient(300px_circle_at_center,white,transparent)]"
-          ) + `dark:text-white text-black`
-        }
-      />
       {/* Navigation */}
       <header className="sticky top-0 z-50 w-full bg-white dark:bg-black border-b border-zinc-200 dark:border-zinc-600">
         <div className="container flex h-16 items-center justify-between max-w-screen-xl mx-auto px-4">
@@ -100,7 +86,7 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-purple-50 to-pink-50 dark:from-black dark:to-black">
+      <section className="relative bg-gradient-to-br from-pink-50 to-white dark:from-black dark:to-black">
         <div className="container max-w-screen-xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-start">
             <div className="space-y-6 self-start md:pt-44 pt-10">
