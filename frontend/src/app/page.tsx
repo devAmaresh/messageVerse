@@ -15,11 +15,30 @@ import {
 } from "lucide-react";
 import { ThemeToggle } from "../components/theme-toggle";
 import { useRouter } from "next/navigation";
+import GridPattern from "@/components/ui/grid-pattern";
+import { cn } from "@/lib/utils";
+import Ripple from "@/components/ui/ripple";
+import { MagicCard } from "@/components/ui/magic-card";
+import { useTheme } from "next-themes";
+import { Avatar } from "antd";
 
 export default function Home() {
   const router = useRouter();
+  const { theme } = useTheme();
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-zinc-800">
+      <GridPattern
+        width={30}
+        height={30}
+        x={-1}
+        y={-1}
+        strokeDasharray={"4 2"}
+        className={
+          cn(
+            "[mask-image:radial-gradient(300px_circle_at_center,white,transparent)]"
+          ) + `dark:text-white text-black`
+        }
+      />
       {/* Navigation */}
       <header className="sticky top-0 z-50 w-full bg-white dark:bg-black border-b border-zinc-200 dark:border-zinc-600">
         <div className="container flex h-16 items-center justify-between max-w-screen-xl mx-auto px-4">
@@ -81,14 +100,20 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-purple-600 to-blue-500 dark:from-[#1F1F1F] dark:to-[#121212]">
+      <section className="relative bg-gradient-to-br from-purple-50 to-pink-50 dark:from-black dark:to-black">
         <div className="container max-w-screen-xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-start">
             <div className="space-y-6 self-start md:pt-44 pt-10">
-              <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight">
-                Connect Instantly with MessageVerse
+              <h1 className="text-4xl md:text-5xl font-bold leading-tight">
+                <span className="bg-gradient-to-r from-yellow-400 to-red-500 bg-clip-text text-transparent">
+                  Connect Instantly
+                </span>{" "}
+                with{" "}
+                <span className="bg-gradient-to-r from-blue-400 to-green-500 bg-clip-text text-transparent">
+                  MessageVerse
+                </span>
               </h1>
-              <p className="text-xl text-blue-100">
+              <p className="text-xl dark:text-blue-100 text-zinc-800">
                 Experience seamless communication with friends and family
                 through secure, private messaging - all in your web browser.
               </p>
@@ -105,7 +130,7 @@ export default function Home() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="dark:text-white  border-white hover:bg-white/10"
+                  className="dark:text-white border-white hover:bg-white/10"
                 >
                   Learn More
                 </Button>
@@ -117,9 +142,9 @@ export default function Home() {
                 width={500}
                 height={500}
                 alt="MessageVerse App"
-                className="rounded-lg shadow-2xl "
+                className="rounded-lg shadow-2xl"
               />
-              <div className="absolute top-1/4 -left-12 bg-white dark:bg-gray-800 rounded-lg p-4 shadow-lg">
+              <div className="absolute top-1/4 -left-12 bg-white dark:bg-[#262525] rounded-lg p-4 shadow-lg">
                 <p className="text-gray-800 dark:text-white">
                   Hey! How&apos;s it going? 👋
                 </p>
@@ -222,19 +247,19 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-6 items-center">
             <div>
               <Image
-                src="https://img.freepik.com/free-photo/side-view-woman-using-virtual-reality-headset_23-2148598108.jpg"
+                src="https://img.freepik.com/free-photo/cartoon-ai-robot-scene_23-2151658114.jpg"
                 width={600}
-                height={400}
+                height={200}
                 alt="Security Illustration"
-                className="rounded-lg shadow-lg"
+                className="rounded-lg shadow-lg h-96 w-[400px]"
               />
             </div>
             <div className="space-y-6">
               <div className="flex items-start space-x-4">
-                <Lock className="h-6 w-6 text-blue-600 dark:text-blue-400 mt-1" />
+                <Lock className="h-12 w-12 text-blue-600 dark:text-blue-400 mt-1" />
                 <div>
                   <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">
                     End-to-End Encryption
@@ -246,7 +271,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex items-start space-x-4">
-                <Shield className="h-6 w-6 text-blue-600 dark:text-blue-400 mt-1" />
+                <Shield className="h-12 w-12 text-blue-600 dark:text-blue-400 mt-1" />
                 <div>
                   <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">
                     Data Protection
@@ -259,7 +284,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex items-start space-x-4">
-                <Sparkles className="h-6 w-6 text-blue-600 dark:text-blue-400 mt-1" />
+                <Sparkles className="h-12 w-12 text-blue-600 dark:text-blue-400 mt-1" />
                 <div>
                   <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">
                     Regular Security Audits
@@ -293,7 +318,7 @@ export default function Home() {
                 name: "Alex Johnson",
                 role: "Marketing Manager",
                 quote:
-                  "MessageVerse has revolutionized how our team communicates. It&apos;s fast, secure, and incredibly user-friendly!",
+                  "MessageVerse has revolutionized how our team communicates. It's fast, secure, and incredibly user-friendly!",
               },
               {
                 name: "Samantha Lee",
@@ -305,7 +330,7 @@ export default function Home() {
                 name: "Michael Chen",
                 role: "Software Developer",
                 quote:
-                  "The end-to-end encryption and web-based platform make MessageVerse the perfect solution for our remote team&apos;s needs.",
+                  "The end-to-end encryption and web-based platform make MessageVerse the perfect solution for our remote team's needs.",
               },
             ].map((testimonial, index) => (
               <Card
@@ -317,7 +342,13 @@ export default function Home() {
                     &quot;{testimonial.quote}&quot;
                   </p>
                   <div className="flex items-center">
-                    <div className="w-12 h-12 bg-blue-200 dark:bg-blue-700 rounded-full mr-4"></div>
+                    <Avatar
+                      src={
+                        "https://avatars.githubusercontent.com/u/23276437?v=4"
+                      }
+                      size={"large"}
+                      className="mr-2"
+                    />
                     <div>
                       <h4 className="font-bold text-gray-900 dark:text-white">
                         {testimonial.name}
@@ -335,7 +366,7 @@ export default function Home() {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-20 bg-white dark:bg-gray-800">
+      <section id="pricing" className="py-20 bg-white dark:bg-black">
         <div className="container max-w-screen-xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">
@@ -356,6 +387,7 @@ export default function Home() {
                   "Group chats up to 20 people",
                   "File sharing up to 100MB",
                   "Basic encryption",
+                  "Free Lifetime Access",
                 ],
               },
               {
@@ -381,40 +413,43 @@ export default function Home() {
                 ],
               },
             ].map((plan, index) => (
-              <Card
+              <MagicCard
                 key={index}
-                className="border-none shadow-lg hover:shadow-xl transition-shadow dark:bg-gray-700"
+                className="cursor-pointer flex-col items-center justify-center py-10 whitespace-nowrap shadow-2xl"
+                gradientColor={theme === "dark" ? "#262626" : "#D9D9D955"}
               >
-                <CardContent className="p-6">
-                  <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
-                    {plan.name}
-                  </h3>
-                  <p className="text-3xl font-bold mb-6 text-blue-600 dark:text-blue-400">
-                    {plan.price}
-                  </p>
-                  <ul className="space-y-2 mb-6">
-                    {plan.features.map((feature, i) => (
-                      <li key={i} className="flex items-center">
-                        <Check className="h-5 w-5 text-blue-600 dark:text-blue-400 mr-2" />
-                        <span className="text-gray-600 dark:text-gray-300">
-                          {feature}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Button className="w-full bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">
-                    Choose Plan
-                  </Button>
-                </CardContent>
-              </Card>
+                <div className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+                  {plan.name}
+                </div>
+                <div className="text-3xl font-bold mb-6 text-blue-600 dark:text-blue-400">
+                  {plan.price}
+                </div>
+                <ul className="space-y-2 mb-6">
+                  {plan.features.map((feature, i) => (
+                    <li key={i} className="flex items-center">
+                      <Check className="h-5 w-5 text-blue-600 dark:text-blue-400 mr-2" />
+                      <span className="text-gray-600 dark:text-gray-300">
+                        {feature}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                <Button
+                  onClick={() => {
+                    router.push("/register");
+                  }}
+                  className="w-full bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+                >
+                  Choose Plan
+                </Button>
+              </MagicCard>
             ))}
           </div>
         </div>
+        {/* CTA Section */}
       </section>
-
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-purple-600 to-blue-500 dark:from-[#1F1F1F] dark:to-[#121212]">
-        <div className="container max-w-screen-xl mx-auto px-4 text-center text-white">
+      <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl">
+        <p className="z-10 text-center">
           <h2 className="text-4xl font-bold mb-6">Ready to Get Started?</h2>
           <p className="text-xl mb-8 opacity-90">
             Join millions of users already connecting on MessageVerse
@@ -429,8 +464,9 @@ export default function Home() {
           >
             Sign Up Now
           </Button>
-        </div>
-      </section>
+        </p>
+        <Ripple />
+      </div>
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12">
