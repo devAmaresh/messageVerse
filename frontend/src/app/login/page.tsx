@@ -60,9 +60,9 @@ const LoginPage = () => {
     }
   }, [token]);
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center dark:bg-black">
       <FloatIcon />
-      <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
+      <div className="w-full max-w-md bg-white dark:border dark:border-blue-500 rounded-lg shadow-lg p-8">
         <h1 className="text-2xl font-bold text-center text-gray-800 flex items-center justify-center gap-2">
           Welcome Back!
         </h1>
@@ -77,8 +77,10 @@ const LoginPage = () => {
           onFinish={onFinish}
           className="space-y-4"
         >
+          <div className="font-semibold text-base -mb-3 dark:text-zinc-700">
+            Email
+          </div>
           <Form.Item
-            label="Email Address"
             name="email"
             rules={[
               { required: true, message: "Email is required" },
@@ -91,9 +93,14 @@ const LoginPage = () => {
               className="p-2"
             />
           </Form.Item>
-
+          <div className="font-semibold text-base dark:text-zinc-700"
+          style={{
+            marginBottom: "-0.75rem"
+          }}
+          >
+            Password
+          </div>
           <Form.Item
-            label="Password"
             name="password"
             rules={[
               { required: true, message: "Password is required" },
